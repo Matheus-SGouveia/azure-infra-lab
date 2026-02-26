@@ -27,13 +27,14 @@ O projeto organiza scripts, diagramas e documentação para facilitar o entendim
 ---
 
 ## 📂 Estrutura do Repositório
+```text
 azure-infra-lab/
-├─ terraform/ # arquivos .tf principais
-├─ scripts/ # scripts de inicialização e automação
-├─ docs/ # documentação do projeto
-├─ diagrams/ # diagramas de arquitetura
-├─ README.md # descrição do projeto
-└─ .gitignore # arquivos e pastas ignorados
+├─ terraform/
+├─ scripts/
+├─ docs/
+├─ diagrams/
+├─ README.md
+└─ .gitignore
 
 
 ---
