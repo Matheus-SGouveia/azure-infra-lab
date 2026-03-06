@@ -15,6 +15,10 @@ resource "azurerm_subnet" "subnet" {
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = ["10.0.1.0/24"]
+
+  depends_on = [
+    azurerm_virtual_network.vnet
+  ]
 }
 
 resource "azurerm_network_security_group" "nsg" {
@@ -38,6 +42,11 @@ resource "azurerm_network_security_group" "nsg" {
 resource "azurerm_subnet_network_security_group_association" "assoc" {
   subnet_id                 = azurerm_subnet.subnet.id
   network_security_group_id = azurerm_network_security_group.nsg.id
+
+  depends_on = [
+    azurerm_subnet.subnet,
+    azurerm_network_security_group.nsg
+  ]
 }
 
 resource "azurerm_public_ip" "pip" {
@@ -53,6 +62,11 @@ resource "azurerm_network_interface" "nic" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
+  depends_on = [
+    azurerm_subnet.subnet,
+    azurerm_public_ip.pip
+  ]
+
   ip_configuration {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.subnet.id
@@ -65,7 +79,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                            = "vm-infra-lab"
   resource_group_name             = azurerm_resource_group.rg.name
   location                        = azurerm_resource_group.rg.location
-  size                            = "Standard_B1s"
+  size                            = "Standard_D2s_v3"
   admin_username                  = "azureuser"
   disable_password_authentication = true
 
@@ -86,11 +100,15 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   source_image_reference {
     publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts"
+    offer     = "ubuntu-24_04-lts"
+    sku       = "server"
     version   = "latest"
   }
 
   computer_name = "vm-infra-lab"
-} 
 
+  depends_on = [
+    azurerm_network_interface.nic,
+    azurerm_subnet_network_security_group_association.assoc
+  ]
+}
