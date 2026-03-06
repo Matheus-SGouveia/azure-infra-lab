@@ -75,7 +75,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username   = "azureuser"
-    public_key = file("/home/matheusti/Downloads/azure-infra-lab-key.pub")
+    public_key = file("/home/matheusti/Downloads/azure-infra-lab-rsa.pub")
   }
 
   os_disk {
@@ -92,4 +92,5 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 
   computer_name = "vm-infra-lab"
-} 	
+} 
+
