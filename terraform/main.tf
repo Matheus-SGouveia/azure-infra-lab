@@ -34,7 +34,7 @@ resource "azurerm_network_security_group" "nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefix      = "164.163.220.243/32"
+    source_address_prefix      = "YOUR_PUBLIC_IP/32"
     destination_address_prefix = "*"
   }
 }
@@ -89,7 +89,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username   = "azureuser"
-    public_key = file("/home/matheusti/Downloads/azure-infra-lab-rsa.pub")
+    public_key = file("/home/Downloads/azure-infra-lab-rsa.pub")
   }
 
   os_disk {
